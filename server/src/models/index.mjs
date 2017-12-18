@@ -1,8 +1,8 @@
-/* _global path */
 import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
 import config from '../config/config.mjs';
+
 const db = {};
 
 const sequelize = new Sequelize(
@@ -13,11 +13,14 @@ const sequelize = new Sequelize(
 );
 
 fs
-	.readdirSync(__dirname)
-	.filter((file) => {
-		console.log('---------file---------------------------');
-		console.log(file);
-		console.log('------------------------------------');
-	});
+  .readdirSync(__dirname)
+  .filter((file) => { file !== 'index.mjs' })
+  .forEach((file) => {
+    const model = sequelize.import(path.join(__dirname, file));
+    db[model.name] = model;
+  });
 
-module.exports = db;
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+export default db;

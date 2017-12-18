@@ -1,4 +1,4 @@
-module.exports = (app) => {
+export default (app) => {
   app.post('/register', (req, res) => {
     res.send({
       finalizado: true,
